@@ -5,7 +5,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  NEXT_PUBLIC_API_URL = "https://your-render-backend-url.onrender.com"
+  NEXT_PUBLIC_API_URL = "https://sehat-saheli.onrender.com"
 
 # Netlify Next.js plugin handles routing automatically
 [[plugins]]
@@ -40,6 +40,6 @@
 # Redirects — SPA fallback handled by Next.js
 [[redirects]]
   from = "/api/*"
-  to = "https://your-render-backend-url.onrender.com/api/:splat"
+  to = "https://sehat-saheli.onrender.com/api/:splat"
   status = 200
   force = true
