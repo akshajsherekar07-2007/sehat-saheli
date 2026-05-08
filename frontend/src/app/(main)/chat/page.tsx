@@ -25,25 +25,34 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [showSidebar, setShowSidebar] = useState(false);
 
-  // Fetch chat sessions
+  // Fetch chat sessions (sidebar list)
   const { data: sessions = [] } = useQuery({
     queryKey: ["chatSessions"],
     queryFn: () => chatApi.listSessions(),
     enabled: isOnline,
   });
 
-  // Fetch messages for active session
+  // Fetch messages when switching to a different session
   const { data: sessionMessages } = useQuery({
     queryKey: ["chatMessages", activeSessionId],
     queryFn: () => chatApi.getMessages(activeSessionId!),
     enabled: !!activeSessionId && isOnline,
+    refetchOnWindowFocus: false,
+    staleTime: Infinity, // Don't auto-refetch — we manage state optimistically
   });
 
+  // Only set messages when switching sessions (not on every refetch)
+  const prevSessionRef = useRef<string | null>(null);
   useEffect(() => {
-    if (sessionMessages) {
-      setMessages(sessionMessages);
+    if (activeSessionId !== prevSessionRef.current) {
+      prevSessionRef.current = activeSessionId;
+      if (sessionMessages) {
+        setMessages(sessionMessages);
+      } else if (!activeSessionId) {
+        setMessages([]);
+      }
     }
-  }, [sessionMessages]);
+  }, [activeSessionId, sessionMessages]);
 
   // Create new session
   const createSessionMutation = useMutation({
@@ -61,7 +70,12 @@ export default function ChatPage() {
     mutationFn: (content: string) =>
       chatApi.sendMessage(activeSessionId!, { content, language }),
     onSuccess: (response) => {
-      setMessages((prev) => [...prev, response.user_message, response.assistant_message]);
+      // Replace temp messages with real ones, add assistant response
+      setMessages((prev) => [
+        ...prev.filter((m) => !m.id.startsWith("temp-")),
+        response.user_message,
+        response.assistant_message,
+      ]);
       queryClient.invalidateQueries({ queryKey: ["chatSessions"] });
     },
   });
