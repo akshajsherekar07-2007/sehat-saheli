@@ -1,5 +1,5 @@
 """
-Seed data for Phase 2 features — quiz, learn, flashcards.
+Seed data for quiz, learn, flashcards, and health camps.
 Run: python -m app.seeds.seed_data
 """
 
@@ -12,6 +12,7 @@ from app.core.database import async_session_factory
 from app.models.quiz import Quiz, QuizCategory
 from app.models.learn import LearnCategory, LearnArticle
 from app.models.flashcard import FlashcardDeck, Flashcard
+from app.models.health_camp import HealthCamp
 
 
 def uid():
@@ -217,6 +218,19 @@ FLASHCARD_DATA = [
     },
 ]
 
+# ── HEALTH CAMP DATA ─────────────────────────────────────────────
+
+HEALTH_CAMP_DATA = [
+    {"name": "Aarogya Health Camp", "description": "Free health check-up and medicine distribution for women and adolescent girls.", "location": "PHC Kothrud, Near Z-Bridge", "district": "Pune", "state": "Maharashtra", "latitude": 18.5074, "longitude": 73.8077, "event_date": "2026-05-20", "contact_phone": "+91-9876543210", "organizer": "District Health Office, Pune"},
+    {"name": "National Anaemia Camp", "description": "Free haemoglobin testing, iron supplements, and nutrition counseling.", "location": "Government Hospital, Nashik Road", "district": "Nashik", "state": "Maharashtra", "latitude": 19.9975, "longitude": 73.7898, "event_date": "2026-05-25", "contact_phone": "+91-9876543211", "organizer": "National Health Mission"},
+    {"name": "Kishori Shakti Health Drive", "description": "Menstrual hygiene kits, health education sessions, and free sanitary pads.", "location": "Zilla Parishad School, Satara", "district": "Satara", "state": "Maharashtra", "latitude": 17.6805, "longitude": 74.0183, "event_date": "2026-06-01", "contact_phone": "+91-9876543212", "organizer": "Women & Child Development Dept"},
+    {"name": "Rural Women Health Mela", "description": "Comprehensive health screening including BMI, blood sugar, and blood pressure.", "location": "Community Hall, Kolhapur", "district": "Kolhapur", "state": "Maharashtra", "latitude": 16.7050, "longitude": 74.2433, "event_date": "2026-06-10", "contact_phone": "+91-9876543213", "organizer": "PHC Kolhapur"},
+    {"name": "Adolescent Health Camp", "description": "Growth monitoring, puberty education, and mental health counseling for girls.", "location": "Govt Girls School, Dharwad", "district": "Dharwad", "state": "Karnataka", "latitude": 15.4589, "longitude": 75.0078, "event_date": "2026-06-05", "contact_phone": "+91-9876543214", "organizer": "ASHA Workers Association"},
+    {"name": "RBSK School Health Camp", "description": "Rashtriya Bal Swasthya Karyakram — free dental, eye, and general check-up.", "location": "Model School, Belgaum", "district": "Belgaum", "state": "Karnataka", "latitude": 15.8497, "longitude": 74.4977, "event_date": "2026-06-15", "contact_phone": "+91-9876543215", "organizer": "District Health Office, Belgaum"},
+    {"name": "Pradhan Mantri Jan Arogya Camp", "description": "Free Ayushman Bharat card registration and basic health screening.", "location": "Taluk Office, Coimbatore", "district": "Coimbatore", "state": "Tamil Nadu", "latitude": 11.0168, "longitude": 76.9558, "event_date": "2026-06-08", "contact_phone": "+91-9876543216", "organizer": "NHM Tamil Nadu"},
+    {"name": "Menstrual Hygiene Day Camp", "description": "Special camp for World Menstrual Hygiene Day — free pads, cups, and education.", "location": "Panchayat Bhavan, Aurangabad", "district": "Aurangabad", "state": "Maharashtra", "latitude": 19.8762, "longitude": 75.3433, "event_date": "2026-05-28", "contact_phone": "+91-9876543217", "organizer": "UNICEF India x PHC Aurangabad"},
+]
+
 
 async def seed():
     """Insert seed data into the database. Re-seeds if data is outdated."""
@@ -259,6 +273,11 @@ async def seed():
             db.add(FlashcardDeck(id=deck_id, name=deck_data["name"], slug=deck_data["slug"], description=deck_data["description"], category=deck_data["category"]))
             for i, card in enumerate(deck_data["cards"]):
                 db.add(Flashcard(id=uid(), deck_id=deck_id, order_index=i, front=card["front"], back=card["back"]))
+
+        print("🏥 Seeding health camp data...")
+        await db.execute(HealthCamp.__table__.delete())
+        for camp in HEALTH_CAMP_DATA:
+            db.add(HealthCamp(id=uid(), **camp))
 
         await db.commit()
         print("✅ Seed data inserted successfully!")

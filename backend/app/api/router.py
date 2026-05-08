@@ -12,6 +12,7 @@ from app.api.v1.quiz import router as quiz_router
 from app.api.v1.flashcards import router as flashcard_router
 from app.api.v1.dashboard import router as dashboard_router
 from app.api.v1.learn import router as learn_router
+from app.api.v1.health_camps import router as health_camps_router
 
 # ── Create the versioned API router ──────────────────────────────
 api_router = APIRouter()
@@ -23,3 +24,4 @@ api_router.include_router(quiz_router)
 api_router.include_router(flashcard_router)
 api_router.include_router(dashboard_router)
 api_router.include_router(learn_router)
+api_router.include_router(health_camps_router)

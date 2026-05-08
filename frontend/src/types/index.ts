@@ -204,3 +204,19 @@ export interface CycleAnalytics {
   shortest_cycle?: number;
   longest_cycle?: number;
 }
+
+// ── Health Camp Types ──────────────────────────────────────────
+export interface HealthCamp {
+  id: string;
+  name: string;
+  description?: string;
+  location: string;
+  district: string;
+  state: string;
+  latitude?: number;
+  longitude?: number;
+  event_date: string;
+  contact_phone?: string;
+  organizer?: string;
+  is_active: boolean;
+}

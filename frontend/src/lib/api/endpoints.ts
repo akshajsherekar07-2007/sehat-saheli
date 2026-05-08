@@ -13,6 +13,7 @@ import type {
   CyclePrediction,
   FlashcardDeck,
   FlashcardItem,
+  HealthCamp,
   LearnArticle,
   LearnCategory,
   LoginRequest,
@@ -122,4 +123,13 @@ export const cycleApi = {
 
   analytics: () =>
     apiClient.get<CycleAnalytics>("/cycles/analytics").then((r) => r.data),
+};
+
+// ── Health Camp Endpoints ─────────────────────────────────────────
+export const healthCampApi = {
+  list: (params?: { state?: string; district?: string; upcoming?: boolean }) =>
+    apiClient.get<HealthCamp[]>("/health-camps", { params }).then((r) => r.data),
+
+  get: (id: string) =>
+    apiClient.get<HealthCamp>(`/health-camps/${id}`).then((r) => r.data),
 };
