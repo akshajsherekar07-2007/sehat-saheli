@@ -107,7 +107,6 @@ export default function ChatPage() {
     async (content: string) => {
       if (!activeSessionId) {
         // Create session first, then send message
-        setIsSending(true);
         try {
           const session = await chatApi.createSession({ language });
           setActiveSessionId(session.id);
@@ -124,6 +123,11 @@ export default function ChatPage() {
             created_at: new Date().toISOString(),
           };
           setMessages([tempUserMsg]);
+
+          // Show typing dots AFTER user message is rendered
+          // Use setTimeout to ensure React renders the message first
+          await new Promise((r) => setTimeout(r, 50));
+          setIsSending(true);
 
           const response = await chatApi.sendMessage(session.id, { content, language });
           setMessages([response.user_message, response.assistant_message]);

@@ -27,9 +27,10 @@ export function ChatInput({ onSend, isLoading, placeholder = "Type your question
     onSend(trimmed);
     setMessage("");
 
-    // Reset textarea height
+    // Reset textarea height and re-focus
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
+      textareaRef.current.focus();
     }
   };
 
