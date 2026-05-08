@@ -1,14 +1,12 @@
 """
 AI service — Google Gemini integration for the health chatbot.
-Provides a pluggable interface for swapping AI providers.
+Uses the new google-genai SDK with gemini-2.5-flash model.
 """
 
-from typing import Protocol, Sequence
-
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from app.core.config import get_settings
-from app.core.exceptions import AIServiceException
 from app.core.logging import get_logger
 
 logger = get_logger(__name__)
@@ -62,26 +60,16 @@ RESPONSE FORMAT:
 - Include the medical disclaimer when relevant"""
 
 
-class AIProviderProtocol(Protocol):
-    """Protocol for AI provider abstraction — enables swapping providers."""
-
-    async def generate_response(
-        self,
-        user_message: str,
-        conversation_history: list[dict[str, str]],
-        language: str,
-    ) -> str: ...
-
-
 class GeminiAIService:
-    """Google Gemini AI integration for health chatbot responses."""
+    """Google Gemini AI integration using the new google-genai SDK."""
+
+    MODEL_NAME = "gemini-2.5-flash"
 
     def __init__(self) -> None:
         if settings.GEMINI_API_KEY:
-            genai.configure(api_key=settings.GEMINI_API_KEY)
-            self._model = genai.GenerativeModel("gemini-1.5-flash")
+            self._client = genai.Client(api_key=settings.GEMINI_API_KEY)
         else:
-            self._model = None
+            self._client = None
             logger.warning("gemini_not_configured", message="GEMINI_API_KEY not set")
 
     async def generate_response(
@@ -92,19 +80,16 @@ class GeminiAIService:
     ) -> str:
         """
         Generate an AI response using Google Gemini.
-        
+
         Args:
             user_message: The user's latest message.
             conversation_history: Previous messages for context.
             language: Language code for the response.
-            
+
         Returns:
             The AI-generated response text.
-            
-        Raises:
-            AIServiceException: If the AI service fails.
         """
-        if not self._model:
+        if not self._client:
             return self._get_fallback_response(language)
 
         try:
@@ -115,7 +100,10 @@ class GeminiAIService:
             chat_context = self._build_context(conversation_history)
             full_prompt = f"{system}\n\nConversation so far:\n{chat_context}\n\nUser: {user_message}\n\nAssistant:"
 
-            response = self._model.generate_content(full_prompt)
+            response = self._client.models.generate_content(
+                model=self.MODEL_NAME,
+                contents=full_prompt,
+            )
 
             if response and response.text:
                 logger.info("ai_response_generated", language=language, length=len(response.text))

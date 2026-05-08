@@ -19,7 +19,7 @@ pydantic-settings
 email-validator
 
 # AI
-google-generativeai
+google-genai
 
 # Logging & Monitoring
 structlog
