@@ -1,0 +1,36 @@
+# FastAPI + Server
+fastapi[standard]
+uvicorn[standard]
+python-multipart
+
+# Database
+sqlalchemy[asyncio]
+aiomysql
+alembic
+
+# Auth & Security
+pyjwt[crypto]
+bcrypt
+python-jose[cryptography]
+
+# Validation & Settings
+pydantic
+pydantic-settings
+email-validator
+
+# AI
+google-generativeai
+
+# Logging & Monitoring
+structlog
+
+# Rate Limiting
+slowapi
+
+# Testing
+pytest
+pytest-asyncio
+httpx
+
+# Utilities
+python-dotenv
