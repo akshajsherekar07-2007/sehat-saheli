@@ -69,6 +69,11 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Tailwind v4 removed default cursor:pointer — restore it globally */
+  a, button, [role="button"], input[type="submit"], input[type="button"], select {
+    cursor: pointer;
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
