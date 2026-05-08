@@ -14,8 +14,8 @@ export default function HealthCampsPage() {
   return (
     <div className="mx-auto max-w-lg px-4 py-6">
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-xl font-bold text-gray-800 mb-1">Health Camps 🏥</h1>
-        <p className="text-sm text-gray-500 mb-6">Nearby government health camp alerts</p>
+        <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">Health Camps 🏥</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Nearby government health camp alerts</p>
       </motion.div>
 
       <div className="space-y-3">
@@ -28,17 +28,17 @@ export default function HealthCampsPage() {
           >
             <Card className="hover:shadow-md transition-all">
               <CardContent className="p-4">
-                <h3 className="text-sm font-semibold text-gray-800 mb-2">{camp.name}</h3>
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">{camp.name}</h3>
                 <div className="space-y-1.5">
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                     <MapPin className="h-3.5 w-3.5 text-dusty-rose-400" />
                     <span>{camp.location}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                     <Calendar className="h-3.5 w-3.5 text-sage-400" />
                     <span>{camp.date}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                     <Phone className="h-3.5 w-3.5 text-lavender-400" />
                     <span>{camp.phone}</span>
                   </div>

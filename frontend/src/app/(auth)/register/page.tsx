@@ -90,17 +90,17 @@ export default function RegisterPage() {
             <span className="text-2xl">🌺</span>
           </div>
           <h1 className="text-2xl font-bold gradient-text">Join Sehat Saheli</h1>
-          <p className="mt-1 text-sm text-gray-500">Start your health awareness journey</p>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Start your health awareness journey</p>
         </div>
 
-        <Card className="border-dusty-rose-100/50 shadow-lg">
+        <Card className="border-dusty-rose-100/50 dark:border-gray-700 shadow-lg">
           <CardContent className="p-5">
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600"
+                  className="rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-600 dark:text-red-400"
                 >
                   {error}
                 </motion.div>
@@ -110,7 +110,7 @@ export default function RegisterPage() {
                 <div key={field.id} className="space-y-1.5">
                   <Label htmlFor={field.id}>{field.label}</Label>
                   <div className="relative">
-                    <field.icon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                    <field.icon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
                     <Input
                       id={field.id}
                       type={field.type}
@@ -129,7 +129,7 @@ export default function RegisterPage() {
               <div className="space-y-1.5">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                  <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
@@ -143,7 +143,7 @@ export default function RegisterPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -156,7 +156,7 @@ export default function RegisterPage() {
                   id="language"
                   value={form.preferred_language}
                   onChange={(e) => updateField("preferred_language", e.target.value)}
-                  className="w-full rounded-xl border-2 border-dusty-rose-200 bg-white px-4 py-2.5 text-sm text-gray-800 shadow-sm focus:border-dusty-rose-400 focus:outline-none focus:ring-2 focus:ring-dusty-rose-100"
+                  className="w-full rounded-xl border-2 border-dusty-rose-200 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-800 dark:text-gray-200 shadow-sm focus:border-dusty-rose-400 focus:outline-none focus:ring-2 focus:ring-dusty-rose-100 dark:focus:ring-dusty-rose-900"
                 >
                   {SUPPORTED_LANGUAGES.map((lang) => (
                     <option key={lang.code} value={lang.code}>
@@ -188,7 +188,7 @@ export default function RegisterPage() {
           </CardContent>
         </Card>
 
-        <p className="mt-5 text-center text-sm text-gray-500">
+        <p className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">
           Already have an account?{" "}
           <Link href="/login" className="font-semibold text-dusty-rose-500 hover:text-dusty-rose-600 transition-colors">
             Sign In

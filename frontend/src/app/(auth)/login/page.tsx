@@ -56,17 +56,17 @@ export default function LoginPage() {
             <span className="text-3xl">🌸</span>
           </div>
           <h1 className="text-2xl font-bold gradient-text">Sehat Saheli 🌸</h1>
-          <p className="mt-1 text-sm text-gray-500">Sign in to continue your health journey</p>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Sign in to continue your health journey</p>
         </div>
 
-        <Card className="border-dusty-rose-100/50 shadow-lg">
+        <Card className="border-dusty-rose-100/50 dark:border-gray-700 shadow-lg">
           <CardContent className="p-6">
             <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600"
+                  className="rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-600 dark:text-red-400"
                 >
                   {error}
                 </motion.div>
@@ -75,7 +75,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                  <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
                   <Input
                     id="phone"
                     type="tel"
@@ -91,7 +91,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                  <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
@@ -104,7 +104,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -133,7 +133,7 @@ export default function LoginPage() {
           </CardContent>
         </Card>
 
-        <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
           Don&apos;t have an account?{" "}
           <Link href="/register" className="font-semibold text-dusty-rose-500 hover:text-dusty-rose-600 transition-colors">
             Register

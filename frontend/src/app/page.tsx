@@ -87,10 +87,10 @@ export default function LandingPage() {
               Sehat Saheli
             </span>
           </h1>
-          <p className="text-lg text-gray-500 font-medium">
+          <p className="text-lg text-gray-500 dark:text-gray-400 font-medium">
             Your Health Companion 💜
           </p>
-          <p className="mt-3 text-sm text-gray-400 leading-relaxed max-w-xs mx-auto">
+          <p className="mt-3 text-sm text-gray-400 dark:text-gray-500 leading-relaxed max-w-xs mx-auto">
             Learn about your body with a friendly AI assistant that speaks your language.
             Safe, private, and always here for you.
           </p>
@@ -105,15 +105,15 @@ export default function LandingPage() {
               initial="initial"
               animate="animate"
               transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
-              className="group rounded-2xl border border-white/60 bg-white/70 p-4 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02]"
+              className="group rounded-2xl border border-white/60 dark:border-gray-700 bg-white/70 dark:bg-gray-800/70 p-4 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02]"
             >
               <div
                 className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r ${feature.color} shadow-sm`}
               >
                 <feature.icon className="h-5 w-5 text-white" />
               </div>
-              <h3 className="mb-1 text-sm font-semibold text-gray-800">{feature.title}</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">{feature.description}</p>
+              <h3 className="mb-1 text-sm font-semibold text-gray-800 dark:text-gray-100">{feature.title}</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{feature.description}</p>
             </motion.div>
           ))}
         </div>
