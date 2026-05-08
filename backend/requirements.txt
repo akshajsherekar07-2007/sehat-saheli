@@ -3,15 +3,15 @@ fastapi[standard]
 uvicorn[standard]
 python-multipart
 
-# Database
+# Database — PostgreSQL (Supabase production) + MySQL (local dev)
 sqlalchemy[asyncio]
+asyncpg
 aiomysql
 alembic
 
 # Auth & Security
 pyjwt[crypto]
 bcrypt
-python-jose[cryptography]
 
 # Validation & Settings
 pydantic

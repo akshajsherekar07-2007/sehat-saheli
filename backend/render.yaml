@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: sehat-saheli-api
+    runtime: docker
+    repo: https://github.com/YOUR_USERNAME/sehat-saheli
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+    healthCheckPath: /health
+    autoDeploy: true
