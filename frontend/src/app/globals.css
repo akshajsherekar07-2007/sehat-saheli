@@ -78,6 +78,18 @@
     cursor: pointer;
   }
 
+  /* Global hover & active effects for all interactive elements */
+  button, [role="button"], a {
+    transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+  }
+  button:hover:not(:disabled), [role="button"]:hover:not(:disabled) {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+  button:active:not(:disabled), [role="button"]:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;

@@ -5,7 +5,7 @@
  */
 
 import { type ReactNode } from "react";
-import { TopBar, BottomNav, OfflineBanner } from "@/components/layout";
+import { TopBar, BottomNav, OfflineBanner, ToastContainer } from "@/components/layout";
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   return (
@@ -14,6 +14,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       <TopBar />
       <main className="flex-1 pb-nav">{children}</main>
       <BottomNav />
+      <ToastContainer />
     </div>
   );
 }

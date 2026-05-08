@@ -34,8 +34,10 @@ export function BottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "relative flex flex-col items-center gap-0.5 px-3 py-2 text-xs font-medium transition-colors duration-200",
-                isActive ? "text-dusty-rose-600" : "text-gray-400 hover:text-gray-600"
+                "relative flex flex-col items-center gap-0.5 px-3 py-2 text-xs font-medium transition-all duration-200",
+                isActive
+                  ? "text-dusty-rose-600 dark:text-dusty-rose-400"
+                  : "text-gray-400 hover:text-dusty-rose-500 dark:hover:text-dusty-rose-300"
               )}
             >
               {isActive && (

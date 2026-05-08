@@ -12,7 +12,7 @@ import { Plus, Trash2, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MessageBubble, ChatInput, TypingIndicator } from "@/components/chat";
 import { chatApi } from "@/lib/api";
-import { useUIStore } from "@/lib/stores";
+import { useUIStore, useToast } from "@/lib/stores";
 import type { ChatMessage, ChatSession } from "@/types";
 
 export default function ChatPage() {
@@ -25,6 +25,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [showSidebar, setShowSidebar] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const toast = useToast();
 
   // Fetch chat sessions (sidebar list)
   const { data: sessions = [] } = useQuery({
@@ -65,6 +66,7 @@ export default function ChatPage() {
       setMessages([]);
       queryClient.invalidateQueries({ queryKey: ["chatSessions"] });
       setShowSidebar(false);
+      toast.success("New chat started");
     },
   });
 
@@ -81,17 +83,24 @@ export default function ChatPage() {
       ]);
       queryClient.invalidateQueries({ queryKey: ["chatSessions"] });
     },
+    onError: () => {
+      toast.error("Failed to send message. Please try again.");
+      // Remove the optimistic temp message
+      setMessages((prev) => prev.filter((m) => !m.id.startsWith("temp-")));
+    },
   });
 
   // Delete session
   const deleteSessionMutation = useMutation({
     mutationFn: (id: string) => chatApi.deleteSession(id),
-    onSuccess: () => {
-      if (activeSessionId) {
+    onSuccess: (_data, deletedId) => {
+      if (activeSessionId === deletedId) {
         setActiveSessionId(null);
+        loadedSessionRef.current = null;
         setMessages([]);
       }
-      queryClient.invalidateQueries({ queryKey: ["chatSessions"] });
+      queryClient.refetchQueries({ queryKey: ["chatSessions"] });
+      toast.success("Chat deleted");
     },
   });
 
@@ -133,7 +142,7 @@ export default function ChatPage() {
           setMessages([response.user_message, response.assistant_message]);
           queryClient.invalidateQueries({ queryKey: ["chatSessions"] });
         } catch {
-          // Handle error
+          toast.error("Failed to send message. Please try again.");
         } finally {
           setIsSending(false);
         }
