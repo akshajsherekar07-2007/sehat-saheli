@@ -4,16 +4,18 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { User, Settings, LogOut, ChevronRight, Globe, Bell, Shield } from "lucide-react";
-import { useAuthStore, useUIStore } from "@/lib/stores";
+import { useAuthStore, useUIStore, useToast } from "@/lib/stores";
 import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const language = useUIStore((s) => s.language);
+  const toast = useToast();
 
   const handleLogout = () => {
     logout();
+    toast.info("Logged out");
     router.push("/login");
   };
 
@@ -47,13 +49,13 @@ export default function ProfilePage() {
             {menuItems.map((item) => (
               <button
                 key={item.label}
-                className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm transition-colors hover:bg-gray-50"
+                className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <div className="flex items-center gap-3">
-                  <item.icon className="h-4.5 w-4.5 text-gray-400" />
-                  <span className="text-gray-700">{item.label}</span>
+                  <item.icon className="h-4.5 w-4.5 text-gray-400 dark:text-gray-500" />
+                  <span className="text-gray-700 dark:text-gray-200">{item.label}</span>
                 </div>
-                <div className="flex items-center gap-1 text-gray-400">
+                <div className="flex items-center gap-1 text-gray-400 dark:text-gray-500">
                   {item.value && <span className="text-xs">{item.value}</span>}
                   <ChevronRight className="h-4 w-4" />
                 </div>
@@ -65,7 +67,7 @@ export default function ProfilePage() {
         {/* Logout */}
         <Button
           variant="outline"
-          className="w-full border-red-200 text-red-500 hover:bg-red-50 hover:text-red-600"
+          className="w-full border-red-200 dark:border-red-900 text-red-500 hover:bg-red-50 dark:hover:bg-red-950 hover:text-red-600"
           onClick={handleLogout}
         >
           <LogOut className="h-4 w-4 mr-2" />

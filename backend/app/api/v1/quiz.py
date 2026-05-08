@@ -6,7 +6,7 @@ import uuid
 from datetime import date
 
 from fastapi import APIRouter, HTTPException
-from sqlalchemy import func, select
+from sqlalchemy import Integer, func, select
 
 from app.core.dependencies import CurrentUserId, DBSession
 from app.models.quiz import Quiz, QuizAttempt, QuizCategory
@@ -108,8 +108,8 @@ async def get_stats(db: DBSession, user_id: CurrentUserId):
     result = await db.execute(
         select(
             func.count(QuizAttempt.id),
-            func.sum(func.cast(QuizAttempt.is_correct, type_=func.integer.__class__)),
-            func.sum(QuizAttempt.score),
+            func.coalesce(func.sum(func.cast(QuizAttempt.is_correct, Integer)), 0),
+            func.coalesce(func.sum(QuizAttempt.score), 0),
         ).where(QuizAttempt.user_id == user_id)
     )
     row = result.one()
