@@ -187,6 +187,53 @@ html.dark select option {
   color: rgb(229 231 235);
 }
 
+/* ── Date Input Styling ──────────────────────────────────────── */
+/* Force dark color scheme on date inputs in dark mode */
+html.dark input[type="date"],
+html.dark input[type="datetime-local"],
+html.dark input[type="time"] {
+  color-scheme: dark;
+  background-color: transparent;
+  color: rgb(229 231 235);
+}
+
+/* Light mode date inputs */
+input[type="date"],
+input[type="datetime-local"],
+input[type="time"] {
+  color-scheme: light;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Calendar icon styling */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+html.dark input[type="date"]::-webkit-calendar-picker-indicator,
+html.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7) sepia(0.3) hue-rotate(300deg) brightness(1.2);
+  opacity: 0.7;
+}
+
+html.dark input[type="date"]::-webkit-calendar-picker-indicator:hover,
+html.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
 /* ── Utility Classes ──────────────────────────────────────────── */
 @layer utilities {
   .gradient-primary {
