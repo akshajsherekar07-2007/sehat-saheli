@@ -51,7 +51,7 @@ export function ChatInput({ onSend, isLoading, placeholder = "Type your question
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-t border-dusty-rose-100 bg-white/95 backdrop-blur-md px-4 py-3 safe-area-bottom"
+      className="border-t border-dusty-rose-100 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md px-4 py-3 safe-area-bottom transition-colors"
     >
       <div className="mx-auto flex max-w-lg items-end gap-2">
         <div className="relative flex-1">
@@ -65,11 +65,11 @@ export function ChatInput({ onSend, isLoading, placeholder = "Type your question
             rows={1}
             disabled={isLoading}
             className={cn(
-              "w-full resize-none rounded-2xl border-2 border-dusty-rose-200 bg-cream px-4 py-3 pr-4 text-sm text-gray-800",
-              "placeholder:text-gray-400",
-              "focus:border-dusty-rose-400 focus:outline-none focus:ring-2 focus:ring-dusty-rose-100",
+              "w-full resize-none rounded-2xl border-2 border-dusty-rose-200 dark:border-gray-600 bg-cream dark:bg-gray-800 px-4 py-3 pr-4 text-sm text-gray-800 dark:text-gray-100",
+              "placeholder:text-gray-400 dark:placeholder:text-gray-500",
+              "focus:border-dusty-rose-400 dark:focus:border-dusty-rose-500 focus:outline-none focus:ring-2 focus:ring-dusty-rose-100 dark:focus:ring-gray-700",
               "disabled:opacity-50",
-              "max-h-[120px]"
+              "max-h-[120px] transition-colors"
             )}
           />
         </div>

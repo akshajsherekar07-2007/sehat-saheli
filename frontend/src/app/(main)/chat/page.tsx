@@ -186,8 +186,8 @@ export default function ChatPage() {
             }}
             className={`group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm cursor-pointer transition-colors ${
               activeSessionId === session.id
-                ? "bg-dusty-rose-50 text-dusty-rose-700"
-                : "text-gray-600 hover:bg-gray-50"
+                ? "bg-dusty-rose-50 dark:bg-gray-700 text-dusty-rose-700 dark:text-dusty-rose-300"
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
             }`}
           >
             <span className="truncate flex-1">{session.title}</span>
@@ -209,9 +209,9 @@ export default function ChatPage() {
   return (
     <div className="relative flex h-[calc(100vh-8rem)]">
       {/* Desktop Sidebar — always visible on lg+ */}
-      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-dusty-rose-100 lg:bg-white/60 lg:backdrop-blur-sm">
-        <div className="flex items-center justify-between p-4 border-b border-dusty-rose-100">
-          <h3 className="text-sm font-semibold text-gray-800">Chat History</h3>
+      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-dusty-rose-100 dark:lg:border-gray-700 lg:bg-white/60 dark:lg:bg-gray-800/60 lg:backdrop-blur-sm transition-colors">
+        <div className="flex items-center justify-between p-4 border-b border-dusty-rose-100 dark:border-gray-700">
+          <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Chat History</h3>
           <Button
             variant="ghost"
             size="sm"
@@ -230,11 +230,11 @@ export default function ChatPage() {
       {/* Main Chat Area */}
       <div className="flex flex-1 flex-col">
         {/* Chat Header */}
-        <div className="flex items-center justify-between border-b border-dusty-rose-100 bg-white/60 backdrop-blur-sm px-4 py-3">
+        <div className="flex items-center justify-between border-b border-dusty-rose-100 dark:border-gray-700 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm px-4 py-3 transition-colors">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowSidebar(!showSidebar)}
-              className="rounded-lg p-1.5 text-gray-500 hover:bg-dusty-rose-50 transition-colors lg:hidden"
+              className="rounded-lg p-1.5 text-gray-500 hover:bg-dusty-rose-50 dark:hover:bg-gray-700 transition-colors lg:hidden"
             >
               <MessageCircle className="h-5 w-5" />
             </button>
@@ -244,7 +244,7 @@ export default function ChatPage() {
               className="h-8 w-8 rounded-full object-cover"
             />
             <div>
-              <h2 className="text-sm font-semibold text-gray-800">Chat with Saheli</h2>
+              <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Chat with Saheli</h2>
               <p className="text-xs text-gray-400">Ask anything about health 🌸</p>
             </div>
           </div>
@@ -276,9 +276,9 @@ export default function ChatPage() {
                 animate={{ x: 0 }}
                 exit={{ x: -280 }}
                 transition={{ type: "spring", damping: 25 }}
-                className="fixed left-0 top-0 z-50 h-full w-72 border-r border-dusty-rose-100 bg-white p-4 shadow-xl lg:hidden"
+                className="fixed left-0 top-0 z-50 h-full w-72 border-r border-dusty-rose-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-xl lg:hidden transition-colors"
               >
-                <h3 className="mb-4 text-sm font-semibold text-gray-800">Chat History</h3>
+                <h3 className="mb-4 text-sm font-semibold text-gray-800 dark:text-gray-200">Chat History</h3>
                 {sessionList}
               </motion.div>
             </>
@@ -288,7 +288,7 @@ export default function ChatPage() {
         {/* Messages Area */}
         <div className="flex-1 overflow-y-auto py-4">
           {/* Medical Disclaimer */}
-          <div className="mx-4 mb-4 rounded-xl bg-gradient-to-r from-sage-50 to-sage-100 border border-sage-200 px-4 py-2.5 text-xs text-sage-700">
+          <div className="mx-4 mb-4 rounded-xl bg-gradient-to-r from-sage-50 to-sage-100 dark:from-gray-800 dark:to-gray-700 border border-sage-200 dark:border-gray-600 px-4 py-2.5 text-xs text-sage-700 dark:text-sage-300 transition-colors">
             💡 This is educational information only. Please consult a healthcare provider for personalized medical advice.
           </div>
 

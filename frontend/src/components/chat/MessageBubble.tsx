@@ -39,10 +39,10 @@ export function MessageBubble({ message }: MessageBubbleProps) {
       {/* Message Content */}
       <div
         className={cn(
-          "max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm",
+          "max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm transition-colors",
           isUser
-            ? "rounded-tr-sm bg-gradient-to-br from-lavender-100 to-lavender-50 text-gray-800"
-            : "rounded-tl-sm bg-gradient-to-br from-dusty-rose-50 to-warm-peach-50 text-gray-800"
+            ? "rounded-tr-sm bg-gradient-to-br from-lavender-100 to-lavender-50 dark:from-lavender-900 dark:to-lavender-800 text-gray-800 dark:text-gray-100"
+            : "rounded-tl-sm bg-gradient-to-br from-dusty-rose-50 to-warm-peach-50 dark:from-gray-700 dark:to-gray-600 text-gray-800 dark:text-gray-100"
         )}
       >
         <p className="whitespace-pre-wrap">{message.content}</p>

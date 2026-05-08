@@ -14,7 +14,7 @@ export function TypingIndicator() {
         alt="Saheli"
         className="h-9 w-9 shrink-0 rounded-full shadow-sm object-cover"
       />
-      <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm bg-gradient-to-br from-dusty-rose-50 to-warm-peach-50 px-5 py-3 shadow-sm">
+      <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm bg-gradient-to-br from-dusty-rose-50 to-warm-peach-50 dark:from-gray-700 dark:to-gray-600 px-5 py-3 shadow-sm transition-colors">
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}

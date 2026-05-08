@@ -19,7 +19,7 @@ export function TopBar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-dusty-rose-100 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md transition-colors">
+    <header className="sticky top-0 z-50 border-b border-dusty-rose-100 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md transition-colors">
       <div className="flex h-14 items-center justify-between px-4">
         {/* App branding — left */}
         <div className="flex items-center gap-2">
