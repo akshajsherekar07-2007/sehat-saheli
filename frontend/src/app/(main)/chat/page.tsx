@@ -39,6 +39,7 @@ export default function ChatPage() {
     queryFn: () => chatApi.getMessages(activeSessionId!),
     enabled: !!activeSessionId && isOnline,
     refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 
   // Track which session we last loaded data for to avoid overwriting optimistic updates
@@ -49,7 +50,7 @@ export default function ChatPage() {
       setMessages([]);
       return;
     }
-    // When switching sessions OR when data arrives for a new session, load it
+    // Only load from server when switching to a session we haven't loaded yet
     if (sessionMessages && loadedSessionRef.current !== activeSessionId) {
       loadedSessionRef.current = activeSessionId;
       setMessages(sessionMessages);
@@ -110,6 +111,8 @@ export default function ChatPage() {
         try {
           const session = await chatApi.createSession({ language });
           setActiveSessionId(session.id);
+          // Mark this session as "owned" so the query effect doesn't overwrite
+          loadedSessionRef.current = session.id;
           queryClient.invalidateQueries({ queryKey: ["chatSessions"] });
 
           // Optimistic add of user message
@@ -171,6 +174,9 @@ export default function ChatPage() {
           <div
             key={session.id}
             onClick={() => {
+              // Reset ref so the effect loads messages from server
+              loadedSessionRef.current = null;
+              queryClient.invalidateQueries({ queryKey: ["chatMessages", session.id] });
               setActiveSessionId(session.id);
               setShowSidebar(false);
             }}
