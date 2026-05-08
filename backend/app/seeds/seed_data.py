@@ -219,12 +219,25 @@ FLASHCARD_DATA = [
 
 
 async def seed():
-    """Insert seed data into the database."""
+    """Insert seed data into the database. Re-seeds if data is outdated."""
     async with async_session_factory() as db:
-        existing = await db.execute(select(QuizCategory).limit(1))
-        if existing.scalar_one_or_none():
-            print("⚠️  Data already seeded, skipping.")
+        from sqlalchemy import func as sa_func
+        result = await db.execute(select(sa_func.count(QuizCategory.id)))
+        existing_count = result.scalar() or 0
+
+        if existing_count >= len(QUIZ_DATA):
+            print(f"⚠️  Data already seeded ({existing_count} quiz categories), skipping.")
             return
+
+        # Clear old partial data before re-seeding
+        if existing_count > 0:
+            print("🔄 Clearing old seed data for re-seed...")
+            await db.execute(Quiz.__table__.delete())
+            await db.execute(QuizCategory.__table__.delete())
+            await db.execute(LearnArticle.__table__.delete())
+            await db.execute(LearnCategory.__table__.delete())
+            await db.execute(Flashcard.__table__.delete())
+            await db.execute(FlashcardDeck.__table__.delete())
 
         print("🌱 Seeding quiz data...")
         for cat_data in QUIZ_DATA:
