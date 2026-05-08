@@ -23,7 +23,7 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-dusty-rose-100 bg-white/95 backdrop-blur-md safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-dusty-rose-100 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md safe-area-bottom transition-colors">
       <div className="mx-auto flex max-w-lg items-center justify-around px-2 py-1">
         {navItems.map((item) => {
           const isActive = pathname.startsWith(item.href);

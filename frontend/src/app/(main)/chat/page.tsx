@@ -39,19 +39,20 @@ export default function ChatPage() {
     queryFn: () => chatApi.getMessages(activeSessionId!),
     enabled: !!activeSessionId && isOnline,
     refetchOnWindowFocus: false,
-    staleTime: Infinity, // Don't auto-refetch — we manage state optimistically
   });
 
-  // Only set messages when switching sessions (not on every refetch)
-  const prevSessionRef = useRef<string | null>(null);
+  // Track which session we last loaded data for to avoid overwriting optimistic updates
+  const loadedSessionRef = useRef<string | null>(null);
   useEffect(() => {
-    if (activeSessionId !== prevSessionRef.current) {
-      prevSessionRef.current = activeSessionId;
-      if (sessionMessages) {
-        setMessages(sessionMessages);
-      } else if (!activeSessionId) {
-        setMessages([]);
-      }
+    if (!activeSessionId) {
+      loadedSessionRef.current = null;
+      setMessages([]);
+      return;
+    }
+    // When switching sessions OR when data arrives for a new session, load it
+    if (sessionMessages && loadedSessionRef.current !== activeSessionId) {
+      loadedSessionRef.current = activeSessionId;
+      setMessages(sessionMessages);
     }
   }, [activeSessionId, sessionMessages]);
 
