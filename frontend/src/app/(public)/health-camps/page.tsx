@@ -25,7 +25,6 @@ export default function HealthCampsPage() {
   const { data: campsData = [], isLoading } = useQuery<HealthCamp[]>({
     queryKey: ["healthCamps", stateFilter],
     queryFn: () => healthCampApi.list({ state: stateFilter || undefined, upcoming: true }),
-    enabled: isAuthenticated,
   });
   const camps = Array.isArray(campsData) ? campsData : [];
 

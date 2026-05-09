@@ -32,14 +32,13 @@ export default function LearnPage() {
   const { data: categoriesData = [] } = useQuery({
     queryKey: ["learnCategories"],
     queryFn: learnApi.listCategories,
-    enabled: isAuthenticated,
   });
   const categories = Array.isArray(categoriesData) ? categoriesData : [];
 
   const { data: articlesData = [] } = useQuery({
     queryKey: ["learnArticles", activeCategory?.slug],
     queryFn: () => learnApi.getArticles(activeCategory!.slug),
-    enabled: !!activeCategory && isAuthenticated,
+    enabled: !!activeCategory,
   });
   const articles = Array.isArray(articlesData) ? articlesData : [];
 
@@ -67,7 +66,7 @@ export default function LearnPage() {
       duration: 3,
       repeat: Infinity,
       repeatType: "reverse" as const,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   };
 

@@ -28,14 +28,13 @@ export default function FlashcardsPage() {
   const { data: decksData = [] } = useQuery({
     queryKey: ["flashcardDecks"],
     queryFn: flashcardApi.listDecks,
-    enabled: isAuthenticated,
   });
   const decks = Array.isArray(decksData) ? decksData : [];
 
   const { data: cardsData = [] } = useQuery({
     queryKey: ["flashcardCards", activeSlug],
     queryFn: () => flashcardApi.getDeckCards(activeSlug!),
-    enabled: !!activeSlug && isAuthenticated,
+    enabled: !!activeSlug,
   });
   const cards = Array.isArray(cardsData) ? cardsData : [];
 
