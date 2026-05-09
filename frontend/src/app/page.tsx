@@ -113,9 +113,14 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.5 }}
         >
-          <Link href="/chat" className="block">
+          <Link href="/quiz" className="block">
             <Button className="w-full h-13 text-base font-semibold bg-gradient-to-r from-dusty-rose-400 to-warm-peach-400 shadow-lg shadow-dusty-rose-200/50 hover:shadow-xl transition-all">
-              Enter Sehat Saheli 🌺
+              Start Learning 🌺
+            </Button>
+          </Link>
+          <Link href="/login" className="block">
+            <Button variant="outline" className="w-full h-12 text-sm font-medium border-dusty-rose-200 dark:border-dusty-rose-700 text-dusty-rose-600 dark:text-dusty-rose-300 hover:bg-dusty-rose-50 dark:hover:bg-dusty-rose-900/20">
+              I already have an account
             </Button>
           </Link>
         </motion.div>
