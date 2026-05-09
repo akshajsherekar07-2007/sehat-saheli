@@ -8,12 +8,12 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { UserPlus, Phone, Lock, User, MapPin, Calendar, Eye, EyeOff } from "lucide-react";
+import { UserPlus, Phone, Lock, User, MapPin, Calendar, Eye, EyeOff, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { useAuthStore } from "@/lib/stores";
+import { useAuthStore, useUIStore } from "@/lib/stores";
 import { SUPPORTED_LANGUAGES } from "@/lib/constants";
 
 export default function RegisterPage() {
@@ -72,8 +72,25 @@ export default function RegisterPage() {
     { id: "address", label: "Address (optional)", type: "text", icon: MapPin, placeholder: "Village/Town, District", required: false },
   ];
 
+  const { theme, toggleTheme } = useUIStore();
+
   return (
     <div className="relative min-h-screen flex items-center justify-center px-6 py-8">
+      {/* Dark Mode Toggle */}
+      <div className="absolute top-4 right-4 z-50">
+        <button
+          onClick={toggleTheme}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 dark:bg-black/10 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 text-gray-600 dark:text-yellow-400 hover:bg-white/20 dark:hover:bg-black/20 transition-all shadow-sm"
+          aria-label="Toggle dark mode"
+        >
+          {theme === "dark" ? (
+            <Sun className="h-5 w-5" />
+          ) : (
+            <Moon className="h-5 w-5" />
+          )}
+        </button>
+      </div>
+
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -right-20 top-10 h-60 w-60 rounded-full bg-lavender-200/30 blur-3xl" />
         <div className="absolute -left-10 bottom-10 h-50 w-50 rounded-full bg-sage-200/30 blur-3xl" />
