@@ -5,7 +5,7 @@ Learn (health education) API — categories and articles.
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import func, select
 
-from app.core.dependencies import CurrentUserId, DBSession
+from app.core.dependencies import DBSession
 from app.models.learn import LearnArticle, LearnCategory
 from app.schemas.learn import LearnArticleOut, LearnCategoryOut
 
@@ -13,7 +13,7 @@ router = APIRouter(prefix="/learn", tags=["learn"])
 
 
 @router.get("/categories", response_model=list[LearnCategoryOut])
-async def list_categories(db: DBSession, _user_id: CurrentUserId):
+async def list_categories(db: DBSession):
     """List all learning categories with article counts."""
     result = await db.execute(
         select(
@@ -36,7 +36,7 @@ async def list_categories(db: DBSession, _user_id: CurrentUserId):
 
 
 @router.get("/category/{slug}", response_model=list[LearnArticleOut])
-async def get_articles(slug: str, db: DBSession, _user_id: CurrentUserId):
+async def get_articles(slug: str, db: DBSession):
     """Get all articles in a category."""
     result = await db.execute(
         select(LearnArticle)
@@ -48,7 +48,7 @@ async def get_articles(slug: str, db: DBSession, _user_id: CurrentUserId):
 
 
 @router.get("/articles/{article_id}", response_model=LearnArticleOut)
-async def get_article(article_id: str, db: DBSession, _user_id: CurrentUserId):
+async def get_article(article_id: str, db: DBSession):
     """Get a single article by ID."""
     result = await db.execute(select(LearnArticle).where(LearnArticle.id == article_id))
     article = result.scalar_one_or_none()

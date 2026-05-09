@@ -2,22 +2,25 @@
 
 /**
  * Quiz page — category selection, interactive quiz flow, and stats.
+ * Accessible to everyone. Score tracking requires login.
  */
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Trophy, Zap, ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
+import { Brain, Trophy, Zap, ArrowLeft, CheckCircle2, XCircle, LogIn } from "lucide-react";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { quizApi } from "@/lib/api";
-import { useUIStore, useToast } from "@/lib/stores";
+import { useAuthStore, useUIStore, useToast } from "@/lib/stores";
 import type { QuizQuestion, QuizCategory } from "@/types";
 
 type View = "categories" | "quiz" | "result";
 
 export default function QuizPage() {
   const language = useUIStore((s) => s.language);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -30,16 +33,17 @@ export default function QuizPage() {
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(0);
 
-  // Fetch categories
+  // Fetch categories (public — no auth needed)
   const { data: categories = [] } = useQuery({
     queryKey: ["quizCategories"],
     queryFn: quizApi.listCategories,
   });
 
-  // Fetch stats
+  // Fetch stats (only if authenticated)
   const { data: stats } = useQuery({
     queryKey: ["quizStats"],
     queryFn: quizApi.getStats,
+    enabled: isAuthenticated,
   });
 
   // Submit answer mutation
@@ -80,7 +84,18 @@ export default function QuizPage() {
   const handleSelect = (optionIdx: number) => {
     if (selected !== null) return; // already answered
     setSelected(optionIdx);
-    submitMutation.mutate({ quizId: questions[currentIdx].id, option: optionIdx });
+
+    if (isAuthenticated) {
+      // Save to server
+      submitMutation.mutate({ quizId: questions[currentIdx].id, option: optionIdx });
+    } else {
+      // Guest mode — show correct answer locally without saving
+      setCorrectAnswer(questions[currentIdx].correct_option);
+      setAnswered((a) => a + 1);
+      if (optionIdx === questions[currentIdx].correct_option) {
+        setScore((s) => s + 10);
+      }
+    }
   };
 
   const nextQuestion = () => {
@@ -106,24 +121,40 @@ export default function QuizPage() {
             <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">Quiz Time! 🧠</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Test your health knowledge and earn points</p>
 
-            {/* Stats bar */}
-            <div className="grid grid-cols-3 gap-3 mb-6">
-              {[
-                { label: "Quizzes", value: stats?.total_attempts ?? 0, icon: Brain },
-                { label: "Score", value: stats?.total_score ?? 0, icon: Trophy },
-                { label: "Accuracy", value: `${stats?.accuracy ?? 0}%`, icon: Zap },
-              ].map((stat, i) => (
-                <motion.div key={stat.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
-                  <Card>
-                    <CardContent className="flex flex-col items-center p-4">
-                      <stat.icon className="h-5 w-5 text-dusty-rose-400 mb-1" />
-                      <span className="text-lg font-bold text-gray-800 dark:text-gray-100">{stat.value}</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">{stat.label}</span>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
+            {/* Stats bar — only for logged-in users */}
+            {isAuthenticated ? (
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                {[
+                  { label: "Quizzes", value: stats?.total_attempts ?? 0, icon: Brain },
+                  { label: "Score", value: stats?.total_score ?? 0, icon: Trophy },
+                  { label: "Accuracy", value: `${stats?.accuracy ?? 0}%`, icon: Zap },
+                ].map((stat, i) => (
+                  <motion.div key={stat.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
+                    <Card>
+                      <CardContent className="flex flex-col items-center p-4">
+                        <stat.icon className="h-5 w-5 text-dusty-rose-400 mb-1" />
+                        <span className="text-lg font-bold text-gray-800 dark:text-gray-100">{stat.value}</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">{stat.label}</span>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+                <Card className="border-dashed border-dusty-rose-200 dark:border-dusty-rose-800">
+                  <CardContent className="flex items-center justify-between p-4">
+                    <div className="flex items-center gap-3">
+                      <LogIn className="h-5 w-5 text-dusty-rose-400" />
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        <Link href="/login" className="text-dusty-rose-500 font-medium hover:underline">Sign in</Link>
+                        {" "}to track your score & progress
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
 
             {/* Category cards */}
             <h2 className="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-3 uppercase tracking-wide">Choose a Topic</h2>
@@ -268,6 +299,13 @@ export default function QuizPage() {
               <Button variant="outline" onClick={() => setView("categories")} className="w-full h-12">
                 Choose Another Topic
               </Button>
+              {!isAuthenticated && (
+                <Link href="/register" className="block">
+                  <Button variant="outline" className="w-full h-12 border-dusty-rose-300 text-dusty-rose-500 hover:bg-dusty-rose-50 dark:border-dusty-rose-700 dark:hover:bg-dusty-rose-900/20">
+                    Sign up to save your progress 🌸
+                  </Button>
+                </Link>
+              )}
             </div>
           </motion.div>
         )}

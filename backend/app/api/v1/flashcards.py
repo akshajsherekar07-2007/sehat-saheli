@@ -5,7 +5,7 @@ Flashcard API — decks and cards.
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import func, select
 
-from app.core.dependencies import CurrentUserId, DBSession
+from app.core.dependencies import DBSession
 from app.models.flashcard import Flashcard, FlashcardDeck
 from app.schemas.flashcard import FlashcardDeckOut, FlashcardOut
 
@@ -13,7 +13,7 @@ router = APIRouter(prefix="/flashcards", tags=["flashcards"])
 
 
 @router.get("/decks", response_model=list[FlashcardDeckOut])
-async def list_decks(db: DBSession, _user_id: CurrentUserId):
+async def list_decks(db: DBSession):
     """List all flashcard decks with card counts."""
     result = await db.execute(
         select(
@@ -36,7 +36,7 @@ async def list_decks(db: DBSession, _user_id: CurrentUserId):
 
 
 @router.get("/decks/{slug}", response_model=list[FlashcardOut])
-async def get_deck_cards(slug: str, db: DBSession, _user_id: CurrentUserId):
+async def get_deck_cards(slug: str, db: DBSession):
     """Get all cards in a deck."""
     result = await db.execute(
         select(Flashcard)

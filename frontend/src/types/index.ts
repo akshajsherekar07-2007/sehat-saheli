@@ -113,6 +113,7 @@ export interface QuizQuestion {
   category_id: string;
   question: Record<string, string>;
   options: Record<string, string[]>;
+  correct_option: number;
   image_url?: string;
   difficulty: string;
 }

@@ -23,7 +23,7 @@ router = APIRouter(prefix="/quiz", tags=["quiz"])
 
 
 @router.get("/categories", response_model=list[QuizCategoryOut])
-async def list_categories(db: DBSession, _user_id: CurrentUserId):
+async def list_categories(db: DBSession):
     """List all quiz categories with question counts."""
     result = await db.execute(
         select(
@@ -46,7 +46,7 @@ async def list_categories(db: DBSession, _user_id: CurrentUserId):
 
 
 @router.get("/category/{slug}", response_model=list[QuizOut])
-async def get_quizzes_by_category(slug: str, db: DBSession, _user_id: CurrentUserId):
+async def get_quizzes_by_category(slug: str, db: DBSession):
     """Get all quizzes in a category (without answers)."""
     result = await db.execute(
         select(Quiz)
@@ -57,7 +57,7 @@ async def get_quizzes_by_category(slug: str, db: DBSession, _user_id: CurrentUse
 
 
 @router.get("/daily", response_model=list[QuizOut])
-async def get_daily_quiz(db: DBSession, _user_id: CurrentUserId):
+async def get_daily_quiz(db: DBSession):
     """Get today's daily quiz questions."""
     today = date.today()
     result = await db.execute(

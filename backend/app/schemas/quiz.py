@@ -24,6 +24,7 @@ class QuizOut(BaseModel):
     category_id: str
     question: dict
     options: dict
+    correct_option: int = 0
     image_url: str | None = None
     difficulty: str = "medium"
 
