@@ -69,10 +69,12 @@ export default function LoginPage() {
       >
         {/* Logo */}
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-dusty-rose-400 to-warm-peach-400 shadow-lg">
-            <span className="text-3xl">🌸</span>
-          </div>
-          <h1 className="text-2xl font-bold gradient-text">Sehat Saheli 🌸</h1>
+          <Link href="/" className="inline-block hover:scale-[1.02] transition-transform">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-dusty-rose-400 to-warm-peach-400 shadow-lg">
+              <span className="text-3xl">🌸</span>
+            </div>
+            <h1 className="text-2xl font-bold gradient-text">Sehat Saheli 🌸</h1>
+          </Link>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Sign in to continue your health journey</p>
         </div>
 
