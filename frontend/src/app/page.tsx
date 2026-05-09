@@ -2,13 +2,15 @@
 
 /**
  * Landing / Onboarding page — first page users see.
- * Beautiful hero with animated elements and CTA buttons.
+ * Beautiful hero with animated elements, linked feature cards, and dark mode toggle.
  */
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Heart, BookOpen, MessageCircle, Shield } from "lucide-react";
+import { Heart, BookOpen, MessageCircle, Shield, Sun, Moon, Brain, Layers } from "lucide-react";
+import { useUIStore, useToast } from "@/lib/stores";
 
 const features = [
   {
@@ -16,24 +18,28 @@ const features = [
     title: "AI Health Companion",
     description: "Chat with Saheli about health topics in your language",
     color: "from-dusty-rose-400 to-warm-peach-400",
+    href: "/chat",
   },
   {
     icon: BookOpen,
     title: "Visual Learning",
     description: "Interactive lessons on health, hygiene, and nutrition",
     color: "from-lavender-400 to-dusty-rose-300",
+    href: "/learn",
   },
   {
-    icon: Heart,
-    title: "Health Tracker",
-    description: "Track your cycle, symptoms, and get predictions",
+    icon: Brain,
+    title: "Quiz & Test",
+    description: "Test your health knowledge and earn points",
     color: "from-sage-400 to-sage-500",
+    href: "/quiz",
   },
   {
-    icon: Shield,
-    title: "Safe & Private",
-    description: "Your data is secure and your privacy is our priority",
+    icon: Layers,
+    title: "Flashcards",
+    description: "Quick-flip cards to memorize health facts",
     color: "from-warm-peach-400 to-warm-peach-500",
+    href: "/flashcards",
   },
 ];
 
@@ -43,6 +49,14 @@ const fadeInUp = {
 };
 
 export default function LandingPage() {
+  const { theme, toggleTheme, setTheme } = useUIStore();
+  const toast = useToast();
+
+  // Apply persisted theme on mount
+  useEffect(() => {
+    setTheme(theme);
+  }, []);
+
   return (
     <div className="min-h-screen overflow-hidden">
       {/* Decorative Background */}
@@ -53,8 +67,39 @@ export default function LandingPage() {
         <div className="absolute -bottom-10 left-1/4 h-52 w-52 rounded-full bg-sage-200/20 blur-3xl" />
       </div>
 
+      {/* Top Bar with Dark Mode Toggle */}
+      <motion.header
+        className="sticky top-0 z-50 border-b border-dusty-rose-100/50 dark:border-gray-700/50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md transition-colors"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <div className="flex h-14 items-center justify-between px-4 mx-auto max-w-lg">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">🌸</span>
+            <span className="bg-gradient-to-r from-dusty-rose-500 to-lavender-500 bg-clip-text text-lg font-bold text-transparent">
+              Sehat Saheli
+            </span>
+          </div>
+          <button
+            onClick={() => {
+              toggleTheme();
+              toast.info(theme === "dark" ? "Light mode ☀️" : "Dark mode 🌙");
+            }}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 dark:border-gray-600 text-gray-500 dark:text-yellow-400 hover:bg-dusty-rose-50 dark:hover:bg-gray-700 transition-colors"
+            aria-label="Toggle dark mode"
+          >
+            {theme === "dark" ? (
+              <Sun className="h-[18px] w-[18px]" />
+            ) : (
+              <Moon className="h-[18px] w-[18px]" />
+            )}
+          </button>
+        </div>
+      </motion.header>
+
       {/* Content */}
-      <div className="relative mx-auto max-w-lg px-6 py-12">
+      <div className="relative mx-auto max-w-lg px-6 py-10">
         {/* Hero Section */}
         <motion.div
           className="mb-12 text-center"
@@ -84,25 +129,26 @@ export default function LandingPage() {
           </p>
         </motion.div>
 
-        {/* Feature Cards */}
+        {/* Feature Cards — Linked */}
         <div className="mb-10 grid grid-cols-2 gap-3">
           {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              variants={fadeInUp}
-              initial="initial"
-              animate="animate"
-              transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
-              className="group rounded-2xl border border-white/60 dark:border-gray-700 bg-white/70 dark:bg-gray-800/70 p-4 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02]"
-            >
-              <div
-                className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r ${feature.color} shadow-sm`}
+            <Link key={feature.title} href={feature.href}>
+              <motion.div
+                variants={fadeInUp}
+                initial="initial"
+                animate="animate"
+                transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
+                className="group rounded-2xl border border-white/60 dark:border-gray-700 bg-white/70 dark:bg-gray-800/70 p-4 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] cursor-pointer h-full"
               >
-                <feature.icon className="h-5 w-5 text-white" />
-              </div>
-              <h3 className="mb-1 text-sm font-semibold text-gray-800 dark:text-gray-100">{feature.title}</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{feature.description}</p>
-            </motion.div>
+                <div
+                  className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r ${feature.color} shadow-sm transition-transform duration-300 group-hover:scale-110`}
+                >
+                  <feature.icon className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="mb-1 text-sm font-semibold text-gray-800 dark:text-gray-100 group-hover:text-dusty-rose-600 dark:group-hover:text-dusty-rose-300 transition-colors">{feature.title}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{feature.description}</p>
+              </motion.div>
+            </Link>
           ))}
         </div>
 
